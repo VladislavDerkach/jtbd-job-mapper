@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JTBD Job Mapper — two skills, Advanced JTBD + Next Move Theory</title>
+<meta name="description" content="Turn customer research into a Jobs-to-be-Done package — a job list, a link graph, a Next Move Theory segment map — rendered to a FigJam board or to one HTML file, for Claude Code." />
+<meta name="author" content="Uladzislau Dziarkach (Vladislav Derkach)" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<meta property="og:title" content="JTBD Job Mapper — two Claude Code skills" />
+<meta property="og:description" content="Research in, a Jobs-to-be-Done package out: segments, a job list, a link graph, a Next Move Theory segment map. FigJam board or one HTML file. Advanced JTBD, Ivan Zamesin." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<style>
+  /* ------------------------------------------------------------------
+     Design tokens — identical to dervlad.com (src/styles/global.css).
+     Cream ground, ink text, one navy accent, hairline rules.
+     ------------------------------------------------------------------ */
+  :root{
+    --cream:#FAFAF7; --ink:#111111; --accent:#1E3A5F; --muted:#6E6E6E;
+    --hairline:#E8E4DC; --surface:#F4F1EA;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --maxw:1024px; --radius:2px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px;
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{line-height:1.2;margin:0;letter-spacing:-.02em}
+  code,kbd,pre{font-family:var(--mono)}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  code{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);padding:1px 5px;font-size:.86em}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--cream) 85%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--hairline)}
+  nav .wrap{display:flex;align-items:center;gap:20px;padding-top:16px;padding-bottom:16px}
+  .brand{display:flex;align-items:baseline;gap:9px;flex-shrink:0;font-size:14px;font-weight:600;letter-spacing:-.01em}
+  .brand .sep{color:var(--hairline);font-weight:400}
+  .brand .page{color:var(--muted);font-weight:500}
+  .brand a:hover{color:var(--accent)}
+  .navlinks{display:flex;gap:24px;margin-left:auto;font-size:14px;color:var(--muted);white-space:nowrap}
+  .navlinks a{transition:color .15s}
+  .navlinks a:hover{color:var(--accent)}
+  .navcta{background:var(--accent);color:var(--cream);font-weight:500;font-size:14px;padding:9px 16px;border-radius:var(--radius);transition:opacity .15s;white-space:nowrap}
+  .navcta:hover{opacity:.9}
+  @media(max-width:700px){.navlinks{display:none}}
+
+  .eyebrow{display:block;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  header{border-bottom:1px solid var(--hairline)}
+  .hero{padding:80px 0 72px}
+  .hero h1{font-size:clamp(34px,5.6vw,58px);font-weight:700;line-height:1.05;margin:24px 0 0}
+  .hero h1 .g{color:var(--accent)}
+  .hero p.lead{font-size:clamp(17px,2.1vw,20px);line-height:1.6;max-width:48rem;margin:24px 0 0}
+  .byline{margin-top:24px;font-size:14px;color:var(--muted)}
+  .byline a{color:var(--accent)}
+  .byline a:hover{text-decoration:underline}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:500;font-size:14px;padding:13px 20px;border-radius:var(--radius);border:1px solid var(--hairline);background:transparent;color:var(--ink);cursor:pointer;transition:.15s}
+  .btn:hover{color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--cream)}
+  .btn.primary:hover{opacity:.9;color:var(--cream)}
+
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;margin-top:56px;padding:32px 0 0;border-top:1px solid var(--hairline)}
+  @media(min-width:768px){.stats{grid-template-columns:repeat(4,1fr);padding-top:40px}}
+  .stat b{display:block;font-size:28px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  @media(min-width:768px){.stat b{font-size:32px}}
+  .stat span{display:block;margin-top:8px;color:var(--muted);font-size:13px;line-height:1.4}
+
+  section{padding:96px 0;border-bottom:1px solid var(--hairline)}
+  @media(min-width:768px){section{padding:128px 0}}
+  .sec-h{font-size:clamp(26px,3.4vw,36px);font-weight:700;margin:20px 0 0}
+  .sec-sub{color:var(--muted);max-width:48rem;margin:20px 0 0;font-size:16px;line-height:1.65}
+
+  .prose{max-width:48rem}
+  .prose p{margin:20px 0;line-height:1.7}
+  .prose strong{font-weight:600}
+  .prose ul{padding-left:20px}
+  .prose li{margin:8px 0;line-height:1.65}
+  .sub-h{font-size:19px;font-weight:600;margin-top:44px}
+
+  .call{display:flex;gap:14px;background:var(--surface);border-left:2px solid var(--accent);padding:18px 20px;margin:28px 0;max-width:48rem}
+  .call .ic{font-size:18px;line-height:1.4;flex-shrink:0}
+  .call p{margin:0;font-size:15px;line-height:1.65}
+
+  .pipe{margin-top:32px;display:grid;gap:10px}
+  .prow{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:stretch}
+  .pstep{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;padding-top:16px;flex-wrap:wrap}
+  .pcards{display:flex;gap:10px;flex-wrap:wrap}
+  .pcard{flex:1;min-width:212px;border:1px solid var(--hairline);border-radius:var(--radius);padding:14px 16px;transition:.15s;background:transparent}
+  .pcard:hover{border-color:var(--accent)}
+  .pcard .phead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .pcard .pn{font-family:var(--mono);font-weight:500;font-size:13.5px;letter-spacing:-.01em}
+  .pcard .pd{color:var(--muted);font-size:13px;margin-top:5px;line-height:1.5}
+  .pcard.gate{border-left:2px solid var(--accent);background:var(--surface)}
+  @media(max-width:680px){.prow{grid-template-columns:1fr;gap:8px}.pstep{padding-top:0}}
+
+  table.deps{width:100%;border-collapse:collapse;margin-top:24px;font-size:14px}
+  table.deps th,table.deps td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--hairline);vertical-align:top}
+  table.deps thead th{color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+  table.deps td{line-height:1.55}
+  @media(max-width:680px){
+    table.deps,table.deps tbody,table.deps tr,table.deps td{display:block;width:100%}
+    table.deps thead{display:none}
+    table.deps tr{border-bottom:1px solid var(--hairline);padding:14px 0}
+    table.deps td{border:0;padding:2px 0}
+  }
+
+  .panel{border:1px solid var(--hairline);border-radius:var(--radius);padding:24px;margin-top:20px}
+  .panel.lead-opt{border-left:2px solid var(--accent)}
+  .cmd{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--ink);overflow:auto;white-space:pre}
+  .copybar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+  .copybar h3{font-size:16px;font-weight:600}
+  .rec{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--cream);background:var(--accent);border-radius:var(--radius);padding:3px 8px;margin-left:10px;vertical-align:2px}
+  .copyb{font-family:var(--mono);font-size:12px;padding:8px 13px;border-radius:var(--radius);border:1px solid var(--accent);background:var(--accent);color:var(--cream);cursor:pointer;font-weight:500;transition:.15s}
+  .copyb:hover{opacity:.9}
+  .copyb.ghost{background:transparent;border-color:var(--hairline);color:var(--muted)}
+  .copyb.ghost:hover{color:var(--accent);border-color:var(--accent);opacity:1}
+  .note{color:var(--muted);font-size:14px;line-height:1.6;margin:14px 0 0}
+
+  footer{padding:56px 0;color:var(--muted);font-size:14px}
+  footer .wrap{display:flex;flex-direction:column;gap:10px}
+  footer .fauthor{color:var(--ink);font-size:15px}
+  footer .fauthor a{color:var(--accent)}
+  footer .fauthor a:hover{text-decoration:underline}
+  footer .flinks{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px}
+  footer .flinks a{color:var(--muted)}
+  footer .flinks a:hover{color:var(--accent)}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--cream);font-weight:500;font-size:14px;padding:12px 20px;border-radius:var(--radius);opacity:0;pointer-events:none;transition:.22s;z-index:100}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .anchor{scroll-margin-top:80px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="brand">
+      <a href="https://dervlad.com">Vlad Derkach</a>
+      <span class="sep">/</span>
+      <a class="page" href="#top">JTBD Job Mapper</a>
+    </span>
+    <div class="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#skills">The two skills</a>
+      <a href="#install">Install</a>
+    </div>
+    <a class="navcta" href="#install">Install</a>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap hero">
+    <span class="eyebrow">Advanced JTBD · Next Move Theory · Claude Code · MIT</span>
+    <h1>Research in. A <span class="g">Jobs-to-be-Done</span> map out.</h1>
+    <p class="lead">Two Claude Code skills that turn desk research, chat corpora, interview transcripts
+      and notes into a full job list — segments, jobs in <strong>When / Want to / So that</strong> form,
+      a link graph, product-fit ratings and a Next Move Theory segment map — built on Ivan Zamesin's
+      Advanced JTBD canon, not generic Christensen JTBD. One renders it to a FigJam board. The other
+      renders one self-contained HTML file that needs no account.</p>
+    <p class="byline">Built by <a href="https://www.linkedin.com/in/vladislavderkach/en/" target="_blank" rel="noopener">Uladzislau Dziarkach (Vladislav Derkach)</a>, who ran discovery at RedTrack.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#install">Install in one command</a>
+      <a class="btn" href="#how">See how it works</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>2</b><span>skills sharing one engine</span></div>
+      <div class="stat"><b>2</b><span>sub-agents: extract, then audit</span></div>
+      <div class="stat"><b>0</b><span>invented facts — every field is sourced or blank</span></div>
+      <div class="stat"><b>MIT</b><span>open source, read the code first</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="how" class="anchor">
+  <div class="wrap">
+    <span class="eyebrow">01 · How it works</span>
+    <h2 class="sec-h">One source of truth, two renders</h2>
+    <div class="prose">
+      <p>You hand it research. It extracts every customer job it can find, labels each one by its
+        source — a direct quote, the research author's hypothesis, or an AI assumption — and sorts
+        jobs into segments defined by the job itself, not by demographics.</p>
+      <p>Everything lives in one file, <code>work/jobs.json</code>. The job-list document, the FigJam
+        board and the HTML page are all views generated from it — never the other way around. Edit the
+        file, re-render; nothing drifts out of sync.</p>
+      <p><strong>Honesty is the whole point.</strong> A made-up "fact" is worse than a blank. A field
+        with no source becomes a "—", not a guess.</p>
+    </div>
+    <div class="call"><span class="ic">🧭</span><p><strong>Method:</strong> Advanced Jobs To Be Done +
+      Next Move Theory, the canon by Ivan Zamesin — distinct from Clayton Christensen's generic JTBD.
+      A job is <code>When</code> (context, trigger, negative emotions, consideration set) /
+      <code>Want to</code> (one infinitive, success criteria) / <code>So that</code> (one higher-level
+      job, positive emotions).</p></div>
+
+    <h3 class="sub-h">The pipeline</h3>
+    <p class="sec-sub" style="margin-top:8px">Stages run in order; the skill stops at three checkpoints
+      for you to review before building on your edits.</p>
+    <div class="pipe">
+      <div class="prow">
+        <div class="pstep">1 · extract</div>
+        <div class="pcards">
+          <div class="pcard"><div class="phead"><span class="pn">jtbd-extractor</span></div>
+            <div class="pd">Per source, in parallel. Raw text → job fragments with evidence quotes.</div></div>
+        </div>
+      </div>
+      <div class="prow">
+        <div class="pstep">2 · merge</div>
+        <div class="pcards">
+          <div class="pcard"><div class="phead"><span class="pn">jobs.json</span></div>
+            <div class="pd">Dedupe, sort into segments, assign job type (regular / orientation / Tax / Fake / emotional / viral).</div></div>
+        </div>
+      </div>
+      <div class="prow">
+        <div class="pstep">3 · audit · ⛔ checkpoint</div>
+        <div class="pcards">
+          <div class="pcard gate"><div class="phead"><span class="pn">jtbd-auditor</span></div>
+            <div class="pd">Checks every field against the evidence, flags Fake Job mislabels, misses Tax Jobs.</div></div>
+        </div>
+      </div>
+      <div class="prow">
+        <div class="pstep">5 · render</div>
+        <div class="pcards">
+          <div class="pcard"><div class="phead"><span class="pn">FigJam board</span></div>
+            <div class="pd">Cards by segment column, a copy with the link graph next to it.</div></div>
+          <div class="pcard"><div class="phead"><span class="pn">HTML file</span></div>
+            <div class="pd">Cards, graph and segment map in one page. Click a card, see only its links.</div></div>
+        </div>
+      </div>
+      <div class="prow">
+        <div class="pstep">6 · graph · ⛔ checkpoint</div>
+        <div class="pcards">
+          <div class="pcard gate"><div class="phead"><span class="pn">edit the links</span></div>
+            <div class="pd">FigJam: drag on the board, read edits back. HTML: edit jobs.json, redraw in under a second.</div></div>
+        </div>
+      </div>
+      <div class="prow">
+        <div class="pstep">7–8 · fit + map</div>
+        <div class="pcards">
+          <div class="pcard"><div class="phead"><span class="pn">product fit + segment map</span></div>
+            <div class="pd">now / minimal work / none, per job — then a Next Move Theory segment map.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="anchor">
+  <div class="wrap">
+    <span class="eyebrow">02 · The two skills</span>
+    <h2 class="sec-h">Same engine, one difference: where it renders</h2>
+    <p class="sec-sub">Install one, or both — the right person to ask is whoever's about to use it.</p>
+    <table class="deps">
+      <thead><tr><th></th><th><code>/jtbd-research-to-figjam</code></th><th><code>/jtbd-research-to-html</code></th></tr></thead>
+      <tbody>
+        <tr><td>Output</td><td>a FigJam board</td><td>one self-contained HTML file</td></tr>
+        <tr><td>Needs</td><td>the Figma MCP, a Figma account</td><td>nothing but Python 3 and a browser</td></tr>
+        <tr><td>Editing the graph</td><td>drag cards by hand, skill reads edits back</td><td>edit <code>jobs.json</code>, re-render in under a second</td></tr>
+        <tr><td>Collaboration</td><td>several people on one board</td><td>share the file, or print to PDF</td></tr>
+        <tr><td>Works offline</td><td>no</td><td>yes</td></tr>
+      </tbody>
+    </table>
+    <div class="prose">
+      <h3 class="sub-h">Two sub-agents, shared by both skills</h3>
+      <ul>
+        <li><strong><code>jtbd-extractor</code></strong> — reads one research source, pulls out every job it can find, returns a <code>jobs.json</code> fragment with evidence quotes. Run once per source, in parallel.</li>
+        <li><strong><code>jtbd-auditor</code></strong> — reviews the merged file: checks every field against the evidence, flags anything unsupported, catches Fake Job mislabels and missed Tax Jobs.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="install" class="anchor">
+  <div class="wrap">
+    <span class="eyebrow">03 · Install</span>
+    <h2 class="sec-h">Into your Claude Code, in one command</h2>
+    <p class="sec-sub">Read the code before you run it against your own research — it's MIT-licensed,
+      38 KB of Markdown and Python, nothing hidden.</p>
+
+    <div class="panel lead-opt">
+      <div class="copybar">
+        <h3>As a Claude Code plugin<span class="rec">Recommended</span></h3>
+        <button class="copyb" id="copy-plugin">Copy</button>
+      </div>
+      <div class="cmd" id="plugin-cmd">/plugin marketplace add VladislavDerkach/jtbd-job-mapper
+/plugin install jtbd-job-mapper@jtbd-job-mapper</div>
+      <p class="note">Installs both skills and both sub-agents. Update later with
+        <code>/plugin update jtbd-job-mapper@jtbd-job-mapper</code>.</p>
+    </div>
+
+    <div class="panel">
+      <div class="copybar">
+        <h3>One-line installer</h3>
+        <button class="copyb ghost" id="copy-curl">Copy</button>
+      </div>
+      <div class="cmd" id="curl-cmd">curl -fsSL https://jtbd-job-mapper.dervlad.com/install.sh | bash</div>
+      <p class="note">Downloads both skills and both agents straight into <code>~/.claude/</code>.</p>
+    </div>
+
+    <div class="panel">
+      <div class="copybar">
+        <h3>Clone and install locally</h3>
+        <button class="copyb ghost" id="copy-clone">Copy</button>
+      </div>
+      <div class="cmd" id="clone-cmd">git clone https://github.com/VladislavDerkach/jtbd-job-mapper.git
+cd jtbd-job-mapper
+./install-local.sh</div>
+      <p class="note">Same result, from your own clone.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="fauthor">Built by <a href="https://www.linkedin.com/in/vladislavderkach/en/" target="_blank" rel="noopener">Uladzislau Dziarkach (Vladislav Derkach)</a></p>
+    <div class="flinks">
+      <a href="https://github.com/VladislavDerkach/jtbd-job-mapper" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://dervlad.com" target="_blank" rel="noopener">dervlad.com ↗</a>
+      <a href="https://product-discovery.dervlad.com" target="_blank" rel="noopener">Product Discovery Flow ↗</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Copied</div>
+<script>
+function copy(id, label){
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    const t = document.getElementById('toast');
+    t.textContent = label || 'Copied';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1400);
+  });
+}
+document.getElementById('copy-plugin').addEventListener('click', () => copy('plugin-cmd'));
+document.getElementById('copy-curl').addEventListener('click', () => copy('curl-cmd'));
+document.getElementById('copy-clone').addEventListener('click', () => copy('clone-cmd'));
+</script>
+</body>
+</html>
