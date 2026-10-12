@@ -9,7 +9,7 @@
 # ─────────────────────────────────────────────────────────────
 set -euo pipefail
 
-BASE="${JJM_BASE:-https://jtbd-job-mapper.dervlad.com}"
+BASE="${JJM_BASE:-https://jtbd-job-mapper.vercel.app}"
 CLAUDE_DIR="$HOME/.claude"
 AGENTS_DIR="$CLAUDE_DIR/agents"
 FIGJAM_DIR="$CLAUDE_DIR/skills/jtbd-research-to-figjam"
