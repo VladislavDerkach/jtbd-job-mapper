@@ -1,0 +1,30 @@
+{
+  "name": "jtbd-job-mapper",
+  "version": "1.0.0",
+  "description": "Turns customer research into a full Jobs-to-be-Done package — segments, a job list in When/Want-to/So-that form, a link graph and a Next Move Theory segment map (Ivan Zamesin's Advanced JTBD canon, not generic Christensen JTBD). Ships two skills that share the same engine and differ only in the final render: jtbd-research-to-figjam draws it on a FigJam board, jtbd-research-to-html renders one self-contained HTML file that opens in any browser.",
+  "author": {
+    "name": "Uladzislau Dziarkach",
+    "url": "https://dervlad.com"
+  },
+  "homepage": "https://jtbd-job-mapper.dervlad.com/",
+  "repository": "https://github.com/VladislavDerkach/jtbd-job-mapper",
+  "license": "MIT",
+  "keywords": [
+    "jtbd",
+    "jobs-to-be-done",
+    "ajtbd",
+    "next-move-theory",
+    "product-management",
+    "segmentation",
+    "customer-research",
+    "figjam"
+  ],
+  "skills": [
+    "./files/skill-figjam",
+    "./files/skill-html"
+  ],
+  "agents": [
+    "./files/agents/jtbd-extractor.md",
+    "./files/agents/jtbd-auditor.md"
+  ]
+}

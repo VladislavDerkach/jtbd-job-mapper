@@ -1,0 +1,24 @@
+{
+  "name": "jtbd-job-mapper",
+  "owner": {
+    "name": "Uladzislau Dziarkach",
+    "url": "https://dervlad.com"
+  },
+  "description": "JTBD Job Mapper by Uladzislau Dziarkach — two Claude Code skills that turn customer research into a Jobs-to-be-Done package (Advanced JTBD + Next Move Theory, Ivan Zamesin), rendered either as a FigJam board or a self-contained HTML file.",
+  "plugins": [
+    {
+      "name": "jtbd-job-mapper",
+      "source": "./",
+      "description": "Extracts jobs per segment from research, builds a job list, a link graph and a Next Move Theory segment map. Two skills, one engine: render to a FigJam board or to one HTML file.",
+      "category": "product-management",
+      "keywords": [
+        "jtbd",
+        "jobs-to-be-done",
+        "ajtbd",
+        "next-move-theory",
+        "segmentation",
+        "figjam"
+      ]
+    }
+  ]
+}

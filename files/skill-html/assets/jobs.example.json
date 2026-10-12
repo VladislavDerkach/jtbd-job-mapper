@@ -1,0 +1,75 @@
+{
+  "project": {
+    "title": "Jobs of yachting-industry user segments",
+    "product": { "name": "HandoverBoat", "state": "a 27-zone inspection at check-in and check-out, hashed photos with a server timestamp, a paired before/after PDF with a public verification link (per the GetApp listing, September 2026)" },
+    "sources": [
+      { "id": "S1", "title": "Desk research: the charter-base staffing market", "kind": "desk" },
+      { "id": "S2", "title": "Corpus: 20 Russian-language yachting chats, 107,797 messages, 2020-2026", "kind": "corpus" }
+    ]
+  },
+  "segments": [
+    { "id": "base", "n": 1, "name": "Base (charter operator)",
+      "intro": "Fleet size splits the segment into small (2-10 boats), mid-size (around 20) and fleet (20-100+).",
+      "goal": "Do a fleet handover fast and without deposit disputes", "goal_basis": "graph", "price": "$$$$", "compete": true },
+    { "id": "client", "n": 2, "name": "Charter client (bareboat skipper)",
+      "goal": "Charter a yacht and get the deposit back without a dispute", "goal_basis": "graph", "price": "$$$", "compete": true }
+  ],
+  "jobs": [
+    { "id": "J1", "n": 1, "segment": "base", "also_segments": [], "type": "b2b-business", "job_type": "regular", "pair_of": null,
+      "title": "Do a handover with an act no one disputes",
+      "who": "base, mid-size and fleet. Roles: manager, technician.",
+      "basis": "corpus and desk.",
+      "when": {
+        "context": ["season April-October, one fleet handover day: Saturday (desk)", "about three check-ins per Saturday per technician (corpus)"],
+        "trigger": "boat return or client arrival on handover day",
+        "neg": "Saturday handover stress (desk); fear of boat-condition disputes (hypothesis)",
+        "cs": "paper check-in/check-out checklist; digital checklists at large operators (desk)"
+      },
+      "want": "I want to do a handover with an act no one will dispute",
+      "criteria": ["faster than the paper checklist", "handover act signed by both sides"],
+      "why": "not get deposit disputes after the handover",
+      "pos": "peace of mind that no complaint will land after Saturday [AI-ASSUMPTION]",
+      "evidence": [ { "source": "S2", "quote": "The question is what state it was in at pickup and what state it was in at drop-off", "where": "fleet tech director, chat" } ],
+      "fit": "now", "fit_note": "paired before/after PDF; two-sided signature isn't mentioned in the product description" },
+    { "id": "J2", "n": 2, "segment": "base", "also_segments": [], "type": "b2b-business", "job_type": "regular", "pair_of": null,
+      "title": "Do an inspection with photo evidence of every piece of damage",
+      "who": "base, technician or dockmaster; at a small base, the manager.",
+      "basis": "author; a diver inspection of the hull is described in desk research.",
+      "when": { "context": "the technician inspects the yacht before departure and after return, including the underwater hull with divers (desk)",
+                "trigger": "handing the yacht to the client, or taking it back after a trip", "neg": "—", "cs": "—" },
+      "want": "I want to do an inspection with photo evidence of every piece of damage",
+      "criteria": ["every piece of damage is on photo", "the inspection fits inside the handover window"],
+      "why": "have evidence for a damage charge or a deposit deduction", "pos": "—",
+      "evidence": [], "fit": "now", "fit_note": "the product's core" },
+    { "id": "J6", "n": 6, "segment": "base", "also_segments": [], "type": "b2b-personal", "job_type": "regular", "pair_of": "J1",
+      "title": "Answer to head office with a document, not words",
+      "who": "base, the manager of a mid-size base or a fleet (the decision-maker).",
+      "basis": "hypothesis; desk research describes fleet accountability and the manager's KPI.",
+      "when": { "context": "the manager answers to head office and the owners for the fleet's condition (desk)",
+                "trigger": "—", "neg": "fear of losing head office's trust (hypothesis)", "cs": "—" },
+      "want": "I want to answer for any damaged boat with a document, not words",
+      "criteria": "—", "why": "keep head office's and the owners' trust (hypothesis)", "pos": "peace of mind that I'm covered (hypothesis)",
+      "evidence": [], "fit": "now", "fit_note": "" },
+    { "id": "J14", "n": 14, "segment": "client", "also_segments": [], "type": "b2c", "job_type": "regular", "pair_of": null,
+      "title": "Record the boat's condition before departure",
+      "who": "charter client, bareboat skipper.",
+      "basis": "corpus. There's past investment: they pay 140-700 EUR for a damage waiver and photograph the boat themselves, so this isn't a Fake Job. A frequency of 1-2 times a year is a property of the job — it sets unit economics, not a sign it's fake.",
+      "when": { "context": "1-2 charters a year; a deposit around 2,000 EUR (corpus)", "trigger": "taking the yacht over at the base",
+                "neg": "fear of paying for someone else's wear (corpus)", "cs": "a 140-700 EUR waiver; their own photos (corpus)" },
+      "want": "I want to record the boat's condition before departure", "criteria": "—", "why": "get the deposit back without a dispute", "pos": "—",
+      "evidence": [], "fit": "now", "fit_note": "through the base's own record" },
+    { "id": "J15", "n": 15, "segment": "client", "also_segments": ["base"], "type": "b2c", "job_type": "regular", "pair_of": null,
+      "title": "Get the deposit back without a dispute",
+      "who": "charter client, bareboat skipper.",
+      "basis": "hypothesis built on the corpus: demand is for the outcome, not for any particular means.",
+      "when": { "context": "1-2 charters a year; a deposit around 2,000 EUR (corpus)", "trigger": "returning the yacht to the base (hypothesis)",
+                "neg": "fear of a withheld deposit and a dispute (hypothesis)", "cs": "a 140-700 EUR waiver (corpus)" },
+      "want": "I want to get my deposit back without a dispute", "criteria": "\"got the deposit back\" (corpus)", "why": "—", "pos": "—",
+      "evidence": [], "fit": "min", "fit_note": "needs the guest's on-the-spot confirmation" }
+  ],
+  "edges": [
+    { "from": "J2", "to": "J1", "kind": "part", "basis": "S1: the inspection is part of the handover" },
+    { "from": "J1", "to": "J6", "kind": "part", "basis": "AI-assumption" },
+    { "from": "J14", "to": "J15", "kind": "part", "basis": "S2: demand is for the outcome" }
+  ]
+}
