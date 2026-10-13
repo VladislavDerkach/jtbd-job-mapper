@@ -6,7 +6,7 @@
 > One renders it to a FigJam board. The other renders it to a single HTML file that needs no account
 > and no internet connection.
 
-🔗 **Live demo:** https://jtbd-job-mapper.vercel.app
+🔗 **Live demo:** https://jtbd-job-mapper.dervlad.com
 👤 **Author:** [Uladzislau Dziarkach (Vladislav Derkach)](https://www.linkedin.com/in/vladislavderkach/en/)
 
 ---
@@ -90,7 +90,7 @@ This installs both skills (`/jtbd-research-to-figjam`, `/jtbd-research-to-html`)
 ### Option B — one-line installer
 
 ```
-curl -fsSL https://jtbd-job-mapper.vercel.app/install.sh | bash
+curl -fsSL https://jtbd-job-mapper.dervlad.com/install.sh | bash
 ```
 
 Downloads both skills and both agents straight into `~/.claude/`. Review [`install.sh`](install.sh)
